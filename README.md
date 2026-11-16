@@ -25,7 +25,7 @@ A visually immersive, responsive **travel journal and editorial magazine website
 
 **[Explore the live website](https://mrpranavpatel.github.io/Wanderwild-V2/)** · **[Browse the source code](https://github.com/MRPRANAVPATEL/Wanderwild-V2)**
 
-> **Personal project and frontend practice.** This template was built for learning, design experimentation, and portfolio presentation. It is a demonstration website, not a live travel agency, publishing service, or subscription product. If you’d like to use or adapt the template, check applicable image and font licenses before commercial use.
+> **Personal project and frontend practice.** This template was built for learning, design experimentation, and portfolio presentation. It is a demonstration website, not a live travel agency, publishing service, or subscription product. Use or adapt it at your own discretion and check applicable image/font licenses before commercial use.
 
 ## About the project
 
