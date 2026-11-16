@@ -1,0 +1,577 @@
+<!DOCTYPE html>
+<html lang="en" class="no-js">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>WANDERWILD — An Immersive Travel Journal</title>
+  <meta name="description" content="WANDERWILD is an independent digital travel magazine: destinations, long-form stories, photography and maps from the edge of the itinerary.">
+  <meta name="theme-color" content="#1F3BFF">
+  <script>document.documentElement.className = 'js';</script>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="preconnect" href="https://images.unsplash.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,800&family=DM+Mono:wght@400;500&family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,700;1,9..40,400&family=Fraunces:ital,opsz,wght@0,9..144,400;1,9..144,400;1,9..144,600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body data-theme="cobalt">
+  <a class="skip-link" href="#destinations">Skip to content</a>
+
+  <!-- ============ LOADER ============ -->
+  <div id="loader" class="loader" aria-hidden="true">
+    <div class="loader__inner">
+      <svg class="loader__compass" viewBox="0 0 100 100" fill="none" stroke="currentColor" stroke-width="2">
+        <circle cx="50" cy="50" r="44"/>
+        <circle cx="50" cy="50" r="38" stroke-dasharray="1 5"/>
+        <path d="M50 12 L58 50 L50 88 L42 50 Z" fill="currentColor" stroke="none" class="loader__needle"/>
+        <circle cx="50" cy="50" r="3" fill="#1F3BFF" stroke="none"/>
+      </svg>
+      <p class="loader__word"><span>W</span><span>A</span><span>N</span><span>D</span><span>E</span><span>R</span><span>W</span><span>I</span><span>L</span><span>D</span></p>
+      <p class="loader__meta"><span>Packing the maps</span><span class="loader__count" id="loaderCount">000</span></p>
+      <div class="loader__bar"><i id="loaderBar"></i></div>
+    </div>
+  </div>
+
+  <div class="cursor" id="cursor" aria-hidden="true"><span class="cursor__label" id="cursorLabel"></span></div>
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+  <!-- ============ HEADER ============ -->
+  <header class="site-header" id="siteHeader">
+    <a class="logo" href="#top" aria-label="WANDERWILD — back to top">WANDER<em>wild</em><sup>®</sup></a>
+    <nav class="primary-nav" aria-label="Primary">
+      <a href="#destinations" data-cursor="Go">Destinations</a>
+      <a href="#stories" data-cursor="Go">Stories</a>
+      <a href="#lens" data-cursor="Go">Gallery</a>
+      <a href="#map" data-cursor="Go">Map</a>
+      <a href="#mood" data-cursor="Go">Moods</a>
+    </nav>
+    <div class="header-actions">
+      <button class="icon-btn" id="searchOpen" type="button" aria-label="Open search" aria-haspopup="dialog">
+        <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5"/></svg>
+      </button>
+      <a class="pill-link" href="#newsletter">Join the trip</a>
+      <button class="menu-btn" id="menuToggle" type="button" aria-expanded="false" aria-controls="menu">
+        <span class="menu-btn__label">Menu</span>
+        <span class="menu-btn__bars" aria-hidden="true"><i></i><i></i></span>
+      </button>
+    </div>
+  </header>
+
+  <!-- ============ FULLSCREEN MENU ============ -->
+  <div class="menu" id="menu" aria-hidden="true">
+    <nav class="menu__nav" aria-label="Full menu">
+      <a href="#destinations" style="--i:0"><small>01</small>Destinations</a>
+      <a href="#stories" style="--i:1"><small>02</small>Stories</a>
+      <a href="#lens" style="--i:2"><small>03</small>Gallery</a>
+      <a href="#map" style="--i:3"><small>04</small>The Map</a>
+      <a href="#mood" style="--i:4"><small>05</small>By Mood</a>
+      <a href="#journal" style="--i:5"><small>06</small>Cover Story</a>
+      <a href="#newsletter" style="--i:6"><small>07</small>Dispatches</a>
+    </nav>
+    <p class="menu__foot">Issue Nº 07 · Autumn 2026 · <span>Independent. Slow. Slightly lost.</span></p>
+  </div>
+
+  <!-- ============ SEARCH OVERLAY ============ -->
+  <div class="search" id="search" role="dialog" aria-modal="true" aria-labelledby="searchTitle" hidden>
+    <div class="search__inner">
+      <button class="search__close" id="searchClose" type="button" aria-label="Close search">Close ✕</button>
+      <h2 id="searchTitle" class="search__title">Where to?</h2>
+      <label class="sr-only" for="searchInput">Search destinations and stories</label>
+      <input id="searchInput" class="search__input" type="search" placeholder="Try “Kyoto”, “beach”, “silence”…" autocomplete="off">
+      <p class="search__count" id="searchCount" aria-live="polite"></p>
+      <ul class="search__results" id="searchResults"></ul>
+    </div>
+  </div>
+
+  <main id="main">
+
+    <!-- ============ 01 · HERO ============ -->
+    <section class="hero" id="top" data-theme="cobalt" aria-labelledby="heroTitle">
+      <p class="hero__issue"><span>Issue Nº 07</span><span>Autumn 2026</span><span>Field notes from 6 continents</span></p>
+
+      <figure class="hero__img hero__arch" data-parallax="0.12">
+        <div class="reveal-img"><img src="https://images.unsplash.com/photo-1533105079780-92b9be482077?auto=format&fit=crop&w=1400&q=75" alt="Pastel houses stacked on a cliff above the Amalfi Coast" width="1400" height="1870" fetchpriority="high" data-fb="#FF5A4D"></div>
+      </figure>
+      <figure class="hero__img hero__circle" data-parallax="-0.18">
+        <div class="reveal-img"><img src="https://images.unsplash.com/photo-1493976040374-85c8e12f0c0e?auto=format&fit=crop&w=900&q=75" alt="A Kyoto street at dusk with lanterns" width="900" height="900" fetchpriority="high" data-fb="#FFD23F"></div>
+      </figure>
+      <figure class="hero__img hero__print" data-parallax="0.22">
+        <div class="reveal-img"><img src="https://images.unsplash.com/photo-1504893524553-b855bce32c67?auto=format&fit=crop&w=900&q=75" alt="A black-sand coast in Iceland under heavy sky" width="900" height="1100" fetchpriority="high" data-fb="#12A66A"></div>
+        <figcaption>Fig. 03 — Reynisfjara, 63.40°N</figcaption>
+      </figure>
+
+      <h1 class="hero__title" id="heroTitle">
+        <span class="line"><span class="word">THE&nbsp;WORLD</span></span>
+        <span class="line"><span class="word">IS&nbsp;<em>wide</em></span></span>
+        <span class="line"><span class="word">OPEN<i>.</i></span></span>
+      </h1>
+
+      <span class="hero__tag tag-a"><i class="dot"></i>Positano, IT <b data-coords="40.6280° N, 14.4850° E">40.6280° N, 14.4850° E</b></span>
+      <span class="hero__tag tag-b"><i class="dot"></i>Kyoto, JP <b data-coords="35.0116° N, 135.7681° E">35.0116° N, 135.7681° E</b></span>
+      <span class="hero__tag tag-c"><i class="dot"></i>Vík, IS <b data-coords="63.4186° N, 19.0060° W">63.4186° N, 19.0060° W</b></span>
+
+      <svg class="stamp stamp--round" viewBox="0 0 120 120" aria-hidden="true">
+        <defs><path id="stampCircle" d="M60,60 m-44,0 a44,44 0 1,1 88,0 a44,44 0 1,1 -88,0"/></defs>
+        <circle cx="60" cy="60" r="57" fill="none" stroke="currentColor" stroke-width="2"/>
+        <circle cx="60" cy="60" r="31" fill="none" stroke="currentColor" stroke-width="1.5" stroke-dasharray="2 3"/>
+        <text font-size="10.5" font-family="DM Mono, monospace" letter-spacing="1.6" fill="currentColor"><textPath href="#stampCircle" textLength="272" lengthAdjust="spacing">PASSPORT OF CURIOSITY • EST. 2026 • APPROVED • </textPath></text>
+        <path d="M42 66 L78 50 L62 80 L58 66 Z" fill="currentColor"/>
+      </svg>
+      <div class="stamp stamp--post" aria-hidden="true"><span>WW</span><b>07</b><small>AIR MAIL</small></div>
+
+      <div class="hero__foot">
+        <p class="hero__intro">An independent travel magazine for people who read the map <em>after</em> they get lost. Stories, photographs and field notes from the edge of the itinerary.</p>
+        <a class="cta cta--big" href="#destinations" data-magnetic data-cursor="Go">
+          <span class="cta__text">Start the journey</span>
+          <span class="cta__arrow" aria-hidden="true"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
+        </a>
+        <a class="hero__scroll" href="#destinations" aria-label="Scroll to destinations"><span>Scroll</span><i></i></a>
+      </div>
+    </section>
+
+    <!-- ============ MARQUEE ============ -->
+    <div class="marquee" aria-hidden="true">
+      <div class="marquee__track">
+        <span>Slow down ✺ Get lost ✺ Eat everything ✺ Take the night train ✺ Talk to strangers ✺ Stay one more day ✺</span>
+        <span>Slow down ✺ Get lost ✺ Eat everything ✺ Take the night train ✺ Talk to strangers ✺ Stay one more day ✺</span>
+      </div>
+    </div>
+
+    <!-- ============ 02 · DESTINATIONS ============ -->
+    <section class="section destinations" id="destinations" data-theme="cream" aria-labelledby="destTitle">
+      <header class="section-head">
+        <p class="eyebrow">Chapter 01 — Places</p>
+        <h2 id="destTitle" class="display-h"><span class="split-line">Destinations</span> <span class="split-line"><em>we love</em></span></h2>
+        <div class="filters" role="group" aria-label="Filter destinations" data-filter-group="destinations">
+          <button class="chip is-active" type="button" data-filter="all" aria-pressed="true">All six</button>
+          <button class="chip" type="button" data-filter="coast" aria-pressed="false">Coast</button>
+          <button class="chip" type="button" data-filter="culture" aria-pressed="false">Culture</button>
+          <button class="chip" type="button" data-filter="wild" aria-pressed="false">Wild</button>
+        </div>
+        <p class="filter-status" id="destStatus" aria-live="polite">Showing all 6 destinations</p>
+      </header>
+
+      <div class="dest-grid" id="destGrid">
+        <article class="dest dest--amalfi" data-cat="coast" data-search="Amalfi Coast Italy Campania coast lemon sea" style="--c:var(--coral)" data-cursor="Explore">
+          <a class="dest__media" href="#" data-demo-link aria-label="Explore Amalfi Coast, Italy">
+            <span class="dest__block"></span>
+            <span class="dest__frame"><img src="https://images.unsplash.com/photo-1534113414509-0eec2bfb493f?auto=format&fit=crop&w=1100&q=75" alt="Terraced cliffs and blue sea along the Amalfi Coast" width="1100" height="1370" loading="lazy" data-fb="#FF5A4D"></span>
+            <span class="dest__no">01</span>
+          </a>
+          <div class="dest__body">
+            <p class="meta"><span class="cat">Coast</span><span>Campania, Italy</span><span>40.63° N · 14.60° E</span></p>
+            <h3 class="dest__name">Amalfi <em>Coast</em></h3>
+            <p class="dest__desc">Lemon terraces, pastel stairways and a sea so loud with colour that everything else looks rehearsed.</p>
+            <span class="arrow-link">Explore <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
+          </div>
+        </article>
+
+        <article class="dest dest--kyoto" data-cat="culture" data-search="Kyoto Japan Kansai temples culture lanterns" style="--c:var(--sun)" data-cursor="Explore">
+          <a class="dest__media" href="#" data-demo-link aria-label="Explore Kyoto, Japan">
+            <span class="dest__block"></span>
+            <span class="dest__frame"><img src="https://images.unsplash.com/photo-1528360983277-13d401cdc186?auto=format&fit=crop&w=1500&q=75" alt="Wooden temple gate and street in Kyoto" width="1500" height="940" loading="lazy" data-fb="#FFD23F"></span>
+            <span class="dest__no">02</span>
+          </a>
+          <div class="dest__body">
+            <p class="meta"><span class="cat">Culture</span><span>Kansai, Japan</span><span>35.01° N · 135.77° E</span></p>
+            <h3 class="dest__name">Kyoto</h3>
+            <p class="dest__desc">Moss gardens, lantern alleys and sixteen hundred temples that reward anyone willing to walk slowly.</p>
+            <span class="arrow-link">Explore <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
+          </div>
+        </article>
+
+        <article class="dest dest--bali" data-cat="coast culture" data-search="Bali Indonesia Ubud rice terraces temples coast culture" style="--c:var(--tropic)" data-cursor="Explore">
+          <a class="dest__media" href="#" data-demo-link aria-label="Explore Bali, Indonesia">
+            <span class="dest__block"></span>
+            <span class="dest__frame"><img src="https://images.unsplash.com/photo-1537996194471-e657df975ab4?auto=format&fit=crop&w=900&q=75" alt="A stone temple gate in Bali framed by greenery" width="900" height="1100" loading="lazy" data-fb="#12A66A"></span>
+            <span class="dest__no">03</span>
+          </a>
+          <div class="dest__body">
+            <p class="meta"><span class="cat">Coast · Culture</span><span>Ubud &amp; beyond, Indonesia</span><span>8.41° S · 115.19° E</span></p>
+            <h3 class="dest__name">Bali</h3>
+            <p class="dest__desc">Offerings on every doorstep, rice terraces by dawn, and reefs the crowds still haven’t found.</p>
+            <span class="arrow-link">Explore <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
+          </div>
+        </article>
+
+        <article class="dest dest--marrakech" data-cat="culture" data-search="Marrakech Morocco medina souk culture spice" style="--c:var(--tangerine)" data-cursor="Explore">
+          <a class="dest__media" href="#" data-demo-link aria-label="Explore Marrakech, Morocco">
+            <span class="dest__block"></span>
+            <span class="dest__frame"><img src="https://images.unsplash.com/photo-1597212618440-806262de4f6b?auto=format&fit=crop&w=900&q=75" alt="Terracotta walls and an arched doorway in Marrakech" width="900" height="1200" loading="lazy" data-fb="#FF8A1F"></span>
+            <span class="dest__no">04</span>
+          </a>
+          <div class="dest__body">
+            <p class="meta"><span class="cat">Culture</span><span>The Medina, Morocco</span><span>31.63° N · 8.00° W</span></p>
+            <h3 class="dest__name">Marrakech</h3>
+            <p class="dest__desc">A labyrinth of terracotta, spice and rooftop mint tea. Get lost on purpose, then follow the smell of bread.</p>
+            <span class="arrow-link">Explore <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
+          </div>
+        </article>
+
+        <article class="dest dest--patagonia" data-cat="wild" data-search="Patagonia Argentina El Chalten Fitz Roy mountains wild hiking" style="--c:var(--cobalt)" data-cursor="Explore">
+          <a class="dest__media" href="#" data-demo-link aria-label="Explore Patagonia, Argentina">
+            <span class="dest__block"></span>
+            <span class="dest__frame"><img src="https://images.unsplash.com/photo-1531761535209-180857e963b9?auto=format&fit=crop&w=1000&q=75" alt="Jagged granite peaks over a Patagonian lake" width="1000" height="1250" loading="lazy" data-fb="#1F3BFF"></span>
+            <span class="dest__no">05</span>
+          </a>
+          <div class="dest__body">
+            <p class="meta"><span class="cat">Wild</span><span>El Chaltén, Argentina</span><span>49.33° S · 72.89° W</span></p>
+            <h3 class="dest__name">Patagonia</h3>
+            <p class="dest__desc">Granite needles, wind with opinions, and trails that make a phone feel like a foreign object.</p>
+            <span class="arrow-link">Explore <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
+          </div>
+        </article>
+
+        <article class="dest dest--iceland" data-cat="wild" data-search="Iceland aurora northern lights glacier wild waterfalls" style="--c:var(--ink)" data-cursor="Explore">
+          <a class="dest__media" href="#" data-demo-link aria-label="Explore Iceland">
+            <span class="dest__block"></span>
+            <span class="dest__frame"><img src="https://images.unsplash.com/photo-1531366936337-7c912a4589a7?auto=format&fit=crop&w=1800&q=75" alt="Green aurora over a snowy Icelandic landscape" width="1800" height="800" loading="lazy" data-fb="#0E0E10"></span>
+            <span class="dest__no">06</span>
+          </a>
+          <div class="dest__body">
+            <p class="meta"><span class="cat">Wild</span><span>Iceland</span><span>64.96° N · 19.02° W</span></p>
+            <h3 class="dest__name">Ice<em>land</em></h3>
+            <p class="dest__desc">Waterfalls in every direction, black beaches, and a sky that occasionally just decides to glow green.</p>
+            <span class="arrow-link">Explore <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <!-- ============ 03 · STORIES ============ -->
+    <section class="section stories" id="stories" data-theme="sun" aria-labelledby="storiesTitle">
+      <header class="section-head section-head--stories">
+        <p class="eyebrow">Chapter 02 — Dispatches</p>
+        <h2 id="storiesTitle" class="display-h display-h--serif"><span class="split-line">The travel</span> <span class="split-line"><em>stories</em></span></h2>
+        <div class="filters" role="group" aria-label="Filter stories" data-filter-group="stories">
+          <button class="chip is-active" type="button" data-filter="all" aria-pressed="true">Everything</button>
+          <button class="chip" type="button" data-filter="city" aria-pressed="false">City</button>
+          <button class="chip" type="button" data-filter="coast" aria-pressed="false">Coast</button>
+          <button class="chip" type="button" data-filter="mountain" aria-pressed="false">Mountain</button>
+          <button class="chip" type="button" data-filter="culture" aria-pressed="false">Culture</button>
+        </div>
+        <p class="filter-status" id="storyStatus" aria-live="polite">Showing all 5 stories</p>
+      </header>
+
+      <div class="story-grid" id="storyGrid">
+        <article class="story story--kyoto" data-cat="city" data-search="72 Hours in Kyoto city temples itinerary Sora Tanabe" data-cursor="Read">
+          <a class="story__media" href="#" data-demo-link aria-label="Read: 72 Hours in Kyoto">
+            <img src="https://images.unsplash.com/photo-1545569341-9eb8b30979d9?auto=format&fit=crop&w=1200&q=75" alt="A red pagoda rising above Kyoto rooftops" width="1200" height="1500" loading="lazy" data-fb="#FF5A4D">
+          </a>
+          <div class="story__body">
+            <p class="meta"><span class="tag-sq">City</span><span>12 min read</span></p>
+            <h3 class="story__title"><a href="#" data-demo-link>72 Hours <em>in</em> Kyoto</a></h3>
+            <p class="story__dek">Three days, one paper map and a rule: never take the same street twice.</p>
+            <p class="byline"><span class="avatar" aria-hidden="true">ST</span>Sora Tanabe <time datetime="2026-10-14">· 14 Oct 2026</time></p>
+          </div>
+        </article>
+
+        <article class="story story--italy" data-cat="coast" data-search="Secret Beaches of Southern Italy coast sea Puglia Calabria Mara Okafor" data-cursor="Read">
+          <a class="story__media" href="#" data-demo-link aria-label="Read: The Secret Beaches of Southern Italy">
+            <img src="https://images.unsplash.com/photo-1510414842594-a61c69b5ae57?auto=format&fit=crop&w=1100&q=75" alt="A small hidden beach with turquoise water" width="1100" height="1100" loading="lazy" data-fb="#12A66A">
+          </a>
+          <div class="story__body">
+            <p class="meta"><span class="tag-sq">Coast</span><span>9 min read</span></p>
+            <h3 class="story__title"><a href="#" data-demo-link>The Secret Beaches of <em>Southern Italy</em></a></h3>
+            <p class="byline"><span class="avatar" aria-hidden="true">MO</span>Mara Okafor <time datetime="2026-09-30">· 30 Sep 2026</time></p>
+          </div>
+          <svg class="story__ring" viewBox="0 0 120 120" aria-hidden="true"><defs><path id="ringPath" d="M60,60 m-48,0 a48,48 0 1,1 96,0 a48,48 0 1,1 -96,0"/></defs><text font-size="10" font-family="DM Mono, monospace" letter-spacing="2" fill="currentColor"><textPath href="#ringPath" textLength="296">NO CROWDS • NO SIGNAL • NO RUSH • </textPath></text></svg>
+        </article>
+
+        <article class="story story--mountain" data-cat="mountain" data-search="Finding Silence in the Mountains mountain hiking quiet Ilan Verhoeven" data-cursor="Read">
+          <a class="story__media" href="#" data-demo-link aria-label="Read: Finding Silence in the Mountains">
+            <img src="https://images.unsplash.com/photo-1506905925346-21bda4d32df4?auto=format&fit=crop&w=1000&q=75" alt="A hiker standing above clouds in high mountains" width="1000" height="1250" loading="lazy" data-fb="#1F3BFF">
+          </a>
+          <div class="story__body">
+            <p class="meta"><span class="tag-sq">Mountain</span><span>14 min read</span></p>
+            <h3 class="story__title"><a href="#" data-demo-link>Finding <em>Silence</em> in the Mountains</a></h3>
+            <p class="story__dek">Six days above the treeline, no earbuds, and a surprising amount to hear.</p>
+            <p class="byline"><span class="avatar" aria-hidden="true">IV</span>Ilan Verhoeven <time datetime="2026-09-18">· 18 Sep 2026</time></p>
+          </div>
+        </article>
+
+        <article class="story story--marrakech" data-cat="city" data-search="A Weekend Lost in Marrakech city medina souk riad Lucia Ferrer" data-cursor="Read">
+          <a class="story__media" href="#" data-demo-link aria-label="Read: A Weekend Lost in Marrakech">
+            <img src="https://images.unsplash.com/photo-1489749798305-4fea3ae63d43?auto=format&fit=crop&w=1500&q=75" alt="Lanterns and rooftops in the Marrakech medina" width="1500" height="940" loading="lazy" data-fb="#FF8A1F">
+          </a>
+          <div class="story__body">
+            <p class="meta"><span class="tag-sq">City</span><span>8 min read</span></p>
+            <h3 class="story__title"><a href="#" data-demo-link>A Weekend <em>Lost</em> in Marrakech</a></h3>
+            <p class="byline"><span class="avatar" aria-hidden="true">LF</span>Lucía Ferrer <time datetime="2026-08-29">· 29 Aug 2026</time></p>
+          </div>
+        </article>
+
+        <article class="story story--bali" data-cat="culture" data-search="The Other Side of Bali culture villages ceremony north Dev Malhotra" data-cursor="Read">
+          <a class="story__media" href="#" data-demo-link aria-label="Read: The Other Side of Bali">
+            <img src="https://images.unsplash.com/photo-1518548419970-58e3b4079ab2?auto=format&fit=crop&w=1000&q=75" alt="Layered green rice terraces in Bali" width="1000" height="1400" loading="lazy" data-fb="#12A66A">
+          </a>
+          <div class="story__body">
+            <p class="meta"><span class="tag-sq">Culture</span><span>11 min read</span></p>
+            <h3 class="story__title"><a href="#" data-demo-link>The Other Side <em>of</em> Bali</a></h3>
+            <p class="story__dek">North of the beach clubs: temple ceremonies, waterfalls and a village that insists you eat first.</p>
+            <p class="byline"><span class="avatar" aria-hidden="true">DM</span>Dev Malhotra <time datetime="2026-08-11">· 11 Aug 2026</time></p>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <!-- ============ 04 · GALLERY ============ -->
+    <section class="gallery" id="lens" data-theme="ink" aria-labelledby="lensTitle">
+      <div class="gallery__pin" id="galleryPin">
+        <header class="gallery__head">
+          <p class="eyebrow">Chapter 03 — Photography</p>
+          <h2 id="lensTitle" class="gallery__title"><span>The world</span> <em>through</em> <span>our lens</span></h2>
+          <p class="gallery__hint"><span id="galleryProgressLabel">Scroll to drift</span><i class="gallery__progress"><b id="galleryProgress"></b></i></p>
+        </header>
+        <div class="gallery__viewport">
+          <ul class="gallery__track" id="galleryTrack">
+            <li class="shot shot--a"><button type="button" class="shot__btn" data-lightbox data-src="https://images.unsplash.com/photo-1469854523086-cc02fe5d8800?auto=format&fit=crop&w=1800&q=80" data-caption="The road to nowhere in particular" data-cursor="View"><img src="https://images.unsplash.com/photo-1469854523086-cc02fe5d8800?auto=format&fit=crop&w=1000&q=75" alt="A long open road through golden landscape" width="1000" height="1250" loading="lazy" data-fb="#FF8A1F"><span class="shot__cap"><b>01</b>The road to nowhere in particular</span></button></li>
+            <li class="shot shot--b"><button type="button" class="shot__btn" data-lightbox data-src="https://images.unsplash.com/photo-1431794062232-2a99a5431c6c?auto=format&fit=crop&w=1800&q=80" data-caption="First light, 3,200 metres" data-cursor="View"><img src="https://images.unsplash.com/photo-1431794062232-2a99a5431c6c?auto=format&fit=crop&w=1400&q=75" alt="A traveller on a ridge at sunrise" width="1400" height="900" loading="lazy" data-fb="#FFD23F"><span class="shot__cap"><b>02</b>First light, 3,200 metres</span></button></li>
+            <li class="shot shot--c"><button type="button" class="shot__btn" data-lightbox data-src="https://images.unsplash.com/photo-1501785888041-af3ef285b470?auto=format&fit=crop&w=1800&q=80" data-caption="A lake that keeps secrets" data-cursor="View"><img src="https://images.unsplash.com/photo-1501785888041-af3ef285b470?auto=format&fit=crop&w=900&q=75" alt="A calm lake surrounded by mountains" width="900" height="1100" loading="lazy" data-fb="#1F3BFF"><span class="shot__cap"><b>03</b>A lake that keeps secrets</span></button></li>
+            <li class="shot shot--d"><button type="button" class="shot__btn" data-lightbox data-src="https://images.unsplash.com/photo-1470071459604-3b5ec3a7fe05?auto=format&fit=crop&w=1800&q=80" data-caption="Fog, ferns, and total quiet" data-cursor="View"><img src="https://images.unsplash.com/photo-1470071459604-3b5ec3a7fe05?auto=format&fit=crop&w=1300&q=75" alt="Fog drifting through a green forest" width="1300" height="860" loading="lazy" data-fb="#12A66A"><span class="shot__cap"><b>04</b>Fog, ferns, and total quiet</span></button></li>
+            <li class="shot shot--e"><button type="button" class="shot__btn" data-lightbox data-src="https://images.unsplash.com/photo-1527631746610-bca00a040d60?auto=format&fit=crop&w=1800&q=80" data-caption="Night train, window seat" data-cursor="View"><img src="https://images.unsplash.com/photo-1527631746610-bca00a040d60?auto=format&fit=crop&w=800&q=75" alt="A train window at dusk" width="800" height="1100" loading="lazy" data-fb="#FF5A4D"><span class="shot__cap"><b>05</b>Night train, window seat</span></button></li>
+            <li class="shot shot--f"><button type="button" class="shot__btn" data-lightbox data-src="https://images.unsplash.com/photo-1544551763-46a013bb70d5?auto=format&fit=crop&w=1800&q=80" data-caption="Twelve metres down, the loudest quiet" data-cursor="View"><img src="https://images.unsplash.com/photo-1544551763-46a013bb70d5?auto=format&fit=crop&w=1300&q=75" alt="Underwater reef with sunlight and fish" width="1300" height="860" loading="lazy" data-fb="#1F3BFF"><span class="shot__cap"><b>06</b>Twelve metres down, the loudest quiet</span></button></li>
+            <li class="shot shot--g"><button type="button" class="shot__btn" data-lightbox data-src="https://images.unsplash.com/photo-1519681393784-d120267933ba?auto=format&fit=crop&w=1800&q=80" data-caption="Stars, uninvoiced" data-cursor="View"><img src="https://images.unsplash.com/photo-1519681393784-d120267933ba?auto=format&fit=crop&w=900&q=75" alt="A starry night sky above snowy mountains" width="900" height="1200" loading="lazy" data-fb="#0E0E10"><span class="shot__cap"><b>07</b>Stars, uninvoiced</span></button></li>
+            <li class="shot shot--h"><button type="button" class="shot__btn" data-lightbox data-src="https://images.unsplash.com/photo-1517760444937-f6397edcbbcd?auto=format&fit=crop&w=1800&q=80" data-caption="Market morning, everything for sale" data-cursor="View"><img src="https://images.unsplash.com/photo-1517760444937-f6397edcbbcd?auto=format&fit=crop&w=1100&q=75" alt="A busy morning street market with produce" width="1100" height="1100" loading="lazy" data-fb="#FFD23F"><span class="shot__cap"><b>08</b>Market morning, everything for sale</span></button></li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ 05 · MAP ============ -->
+    <section class="section map" id="map" data-theme="tropic" aria-labelledby="mapTitle">
+      <header class="section-head">
+        <p class="eyebrow">Chapter 04 — Orientation</p>
+        <h2 id="mapTitle" class="display-h"><span class="split-line">The travel</span> <span class="split-line"><em>map</em></span></h2>
+        <p class="map__lede">Six pins, six places we can’t stop thinking about. Tap a marker to unfold the postcard.</p>
+      </header>
+
+      <div class="map__layout">
+        <div class="map__stage" id="mapStage">
+          <svg class="map__svg" id="mapSvg" viewBox="0 0 1000 394" role="img" aria-label="Dotted world map with six featured destinations"></svg>
+          <button class="pin" type="button" data-pin="amalfi" data-lat="40.63" data-lon="14.6" aria-label="Amalfi Coast, Italy"><i></i><span>Amalfi</span></button>
+          <button class="pin" type="button" data-pin="kyoto" data-lat="35.01" data-lon="135.77" aria-label="Kyoto, Japan"><i></i><span>Kyoto</span></button>
+          <button class="pin" type="button" data-pin="bali" data-lat="-8.4" data-lon="115.2" aria-label="Bali, Indonesia"><i></i><span>Bali</span></button>
+          <button class="pin" type="button" data-pin="marrakech" data-lat="31.63" data-lon="-8" aria-label="Marrakech, Morocco"><i></i><span>Marrakech</span></button>
+          <button class="pin" type="button" data-pin="patagonia" data-lat="-49.33" data-lon="-72.89" aria-label="Patagonia, Argentina"><i></i><span>Patagonia</span></button>
+          <button class="pin" type="button" data-pin="iceland" data-lat="64.96" data-lon="-19.02" aria-label="Iceland"><i></i><span>Iceland</span></button>
+          <p class="map__compass" aria-hidden="true">N ↑</p>
+        </div>
+
+        <aside class="postcard" id="postcard" aria-live="polite">
+          <div class="postcard__photo"><img id="pcImg" src="https://images.unsplash.com/photo-1492571350019-22de08371fd3?auto=format&fit=crop&w=900&q=75" alt="" width="900" height="700" loading="lazy" data-fb="#FFD23F"></div>
+          <div class="postcard__text">
+            <p class="postcard__coords" id="pcCoords">35.01° N · 135.77° E</p>
+            <h3 class="postcard__name" id="pcName">Kyoto</h3>
+            <p class="postcard__country" id="pcCountry">Japan · Best in November</p>
+            <p class="postcard__desc" id="pcDesc">Walk the Philosopher’s Path at 7 a.m. and the city is yours alone.</p>
+            <a class="arrow-link" href="#" data-demo-link>Read the journal <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
+          </div>
+          <div class="postcard__stamp" aria-hidden="true">AIR<br>MAIL</div>
+        </aside>
+      </div>
+    </section>
+
+    <!-- ============ 06 · MOOD ============ -->
+    <section class="section mood" id="mood" data-theme="cream" aria-labelledby="moodTitle">
+      <header class="section-head">
+        <p class="eyebrow">Chapter 05 — Feelings</p>
+        <h2 id="moodTitle" class="display-h"><span class="split-line">Travel</span> <span class="split-line"><em>by mood</em></span></h2>
+      </header>
+
+      <div class="mood__row" id="moodRow">
+        <article class="mood-panel mood--slow is-open" tabindex="0" role="button" aria-expanded="true" aria-label="Slow Travel">
+          <img src="https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?auto=format&fit=crop&w=1000&q=70" alt="" width="1000" height="1400" loading="lazy" data-fb="#12A66A">
+          <div class="mood-panel__content">
+            <span class="mood-panel__no">01</span>
+            <h3 class="mood-panel__name">Slow<br><em>Travel</em></h3>
+            <p class="mood-panel__desc">Fewer stops, longer stays. Learn the baker’s name before you learn the sights.</p>
+          </div>
+        </article>
+        <article class="mood-panel mood--wild" tabindex="0" role="button" aria-expanded="false" aria-label="Wild Adventures">
+          <img src="https://images.unsplash.com/photo-1522163182402-834f871fd851?auto=format&fit=crop&w=1000&q=70" alt="" width="1000" height="1400" loading="lazy" data-fb="#FF5A4D">
+          <div class="mood-panel__content">
+            <span class="mood-panel__no">02</span>
+            <h3 class="mood-panel__name">Wild<br><em>Adventures</em></h3>
+            <p class="mood-panel__desc">Rope, rivers and routes with names like “Last Chance”. Bring good boots.</p>
+          </div>
+        </article>
+        <article class="mood-panel mood--city" tabindex="0" role="button" aria-expanded="false" aria-label="City Escapes">
+          <img src="https://images.unsplash.com/photo-1480714378408-67cf0d13bc1b?auto=format&fit=crop&w=1000&q=70" alt="" width="1000" height="1400" loading="lazy" data-fb="#FFD23F">
+          <div class="mood-panel__content">
+            <span class="mood-panel__no">03</span>
+            <h3 class="mood-panel__name">City<br><em>Escapes</em></h3>
+            <p class="mood-panel__desc">Night markets, rooftop bars, and a metro map you’ll pretend to understand.</p>
+          </div>
+        </article>
+        <article class="mood-panel mood--beach" tabindex="0" role="button" aria-expanded="false" aria-label="Beach Days">
+          <img src="https://images.unsplash.com/photo-1506197603052-3cc9c3a201bd?auto=format&fit=crop&w=1000&q=70" alt="" width="1000" height="1400" loading="lazy" data-fb="#FF8A1F">
+          <div class="mood-panel__content">
+            <span class="mood-panel__no">04</span>
+            <h3 class="mood-panel__name">Beach<br><em>Days</em></h3>
+            <p class="mood-panel__desc">Salt in your hair, sand in the book, and absolutely nowhere to be.</p>
+          </div>
+        </article>
+        <article class="mood-panel mood--mountain" tabindex="0" role="button" aria-expanded="false" aria-label="Mountain Stories">
+          <img src="https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?auto=format&fit=crop&w=1000&q=70" alt="" width="1000" height="1400" loading="lazy" data-fb="#1F3BFF">
+          <div class="mood-panel__content">
+            <span class="mood-panel__no">05</span>
+            <h3 class="mood-panel__name">Mountain<br><em>Stories</em></h3>
+            <p class="mood-panel__desc">Huts, high passes and the best soup you’ll ever eat, at altitude.</p>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <!-- ============ 07 · FEATURED JOURNAL ============ -->
+    <section class="feature" id="journal" data-theme="ink" aria-labelledby="featTitle">
+      <div class="feature__bg" data-parallax="0.15"><img src="https://images.unsplash.com/photo-1513519245088-0e12902e5a38?auto=format&fit=crop&w=2200&q=78" alt="Red fishing cabins beneath jagged peaks in the Lofoten Islands" width="2200" height="1400" loading="lazy" data-fb="#1F3BFF"></div>
+      <div class="feature__shade" aria-hidden="true"></div>
+
+      <div class="feature__cover">
+        <p class="feature__top"><span>WANDERWILD</span><span>The Cover Story</span><span>Issue Nº 07</span></p>
+        <h2 class="feature__giant" id="featTitle" aria-label="Lofoten"><span>LO</span><span>FO</span><span>TEN</span></h2>
+        <div class="feature__card">
+          <p class="eyebrow">68.2° N · Norway</p>
+          <p class="feature__kicker">Where the road <em>runs out</em> of ideas.</p>
+          <p>Twelve days of winter light, red fishing cabins and a sea that never quite stays the same colour. A full issue on the edge of the Arctic.</p>
+          <button class="cta" type="button" id="featureToggle" aria-expanded="false" aria-controls="featureChapters" data-magnetic data-cursor="Open">
+            <span class="cta__text">Explore the issue</span>
+            <span class="cta__arrow" aria-hidden="true"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M6 13l6 6 6-6"/></svg></span>
+          </button>
+          <ol class="feature__chapters" id="featureChapters" hidden>
+            <li><b>I</b> Arriving by ferry at midnight (and why it’s light)</li>
+            <li><b>II</b> The fish-drying racks of Hamnøy</li>
+            <li><b>III</b> Surfing at 68° north in a 7 mm wetsuit</li>
+            <li><b>IV</b> Rorbu nights: how to live in a fisherman’s cabin</li>
+            <li><b>V</b> A field guide to the northern lights</li>
+          </ol>
+        </div>
+        <svg class="feature__barcode" viewBox="0 0 120 46" aria-hidden="true"><g fill="currentColor"><rect x="0" width="3" height="40"/><rect x="6" width="1.5" height="40"/><rect x="10" width="4" height="40"/><rect x="17" width="2" height="40"/><rect x="22" width="1.5" height="40"/><rect x="27" width="5" height="40"/><rect x="35" width="2" height="40"/><rect x="40" width="3" height="40"/><rect x="46" width="1.5" height="40"/><rect x="51" width="4" height="40"/><rect x="58" width="2" height="40"/><rect x="63" width="3" height="40"/><rect x="69" width="1.5" height="40"/><rect x="74" width="5" height="40"/><rect x="82" width="2" height="40"/><rect x="87" width="3" height="40"/><rect x="93" width="1.5" height="40"/><rect x="98" width="4" height="40"/><rect x="105" width="2" height="40"/><rect x="110" width="3" height="40"/><rect x="116" width="4" height="40"/></g><text x="0" y="45" font-size="5" font-family="DM Mono, monospace" fill="currentColor">WW 07 · 68.2N 13.6E</text></svg>
+      </div>
+    </section>
+
+    <!-- ============ 08 · PHOTO JOURNAL GRID ============ -->
+    <section class="section pj" id="photojournal" data-theme="coral" aria-labelledby="pjTitle">
+      <header class="section-head section-head--pj">
+        <p class="eyebrow">Chapter 06 — Scrapbook</p>
+        <h2 id="pjTitle" class="display-h"><span class="split-line">Photo</span> <span class="split-line"><em>journal</em></span></h2>
+        <p class="pj__note">Small frames from big days. Tap or hover a frame.</p>
+      </header>
+      <div class="pj__grid">
+        <figure class="pj__tile t1" tabindex="0"><img src="https://images.unsplash.com/photo-1414235077428-338989a2e8c0?auto=format&fit=crop&w=1000&q=72" alt="A plated dinner in a small restaurant" width="1000" height="1250" loading="lazy" data-fb="#FFD23F"><figcaption><b>Dinner, unplanned</b><span>Lisbon · 8:40 pm</span></figcaption></figure>
+        <figure class="pj__tile t2" tabindex="0"><img src="https://images.unsplash.com/photo-1504674900247-0877df9cc836?auto=format&fit=crop&w=1000&q=72" alt="Fresh street food on a wooden board" width="1000" height="800" loading="lazy" data-fb="#FF8A1F"><figcaption><b>Street-side lunch</b><span>Hanoi · noon</span></figcaption></figure>
+        <figure class="pj__tile t3" tabindex="0"><img src="https://images.unsplash.com/photo-1469521669194-babb45599def?auto=format&fit=crop&w=800&q=72" alt="Paper lanterns glowing at night" width="800" height="800" loading="lazy" data-fb="#FFD23F"><figcaption><b>Lantern hour</b><span>Chiang Mai</span></figcaption></figure>
+        <figure class="pj__tile t4" tabindex="0"><img src="https://images.unsplash.com/photo-1519608487953-e999c86e7455?auto=format&fit=crop&w=900&q=72" alt="Colourful market stalls" width="900" height="1200" loading="lazy" data-fb="#12A66A"><figcaption><b>Colour, by the kilo</b><span>Oaxaca</span></figcaption></figure>
+        <figure class="pj__tile t5" tabindex="0"><img src="https://images.unsplash.com/photo-1502920917128-1aa500764cbd?auto=format&fit=crop&w=1400&q=72" alt="A coastal town glowing at sunset" width="1400" height="900" loading="lazy" data-fb="#1F3BFF"><figcaption><b>Golden hour, again</b><span>Cinque Terre</span></figcaption></figure>
+        <figure class="pj__tile t6" tabindex="0"><img src="https://images.unsplash.com/photo-1426604966848-d7adac402bff?auto=format&fit=crop&w=900&q=72" alt="Forest and river landscape" width="900" height="900" loading="lazy" data-fb="#12A66A"><figcaption><b>The long way round</b><span>Pacific Northwest</span></figcaption></figure>
+        <figure class="pj__tile t7" tabindex="0"><img src="https://images.unsplash.com/photo-1472214103451-9374bd1c798e?auto=format&fit=crop&w=900&q=72" alt="Green rolling hills at dusk" width="900" height="1100" loading="lazy" data-fb="#FFD23F"><figcaption><b>Hills with opinions</b><span>Tuscany</span></figcaption></figure>
+        <figure class="pj__tile t8" tabindex="0"><img src="https://images.unsplash.com/photo-1505118380757-91f5f5632de0?auto=format&fit=crop&w=1200&q=72" alt="Deep blue ocean waves" width="1200" height="800" loading="lazy" data-fb="#1F3BFF"><figcaption><b>Blue, mostly</b><span>Azores</span></figcaption></figure>
+        <figure class="pj__tile t9" tabindex="0"><img src="https://images.unsplash.com/photo-1488646953014-85cb44e25828?auto=format&fit=crop&w=900&q=72" alt="A traveller with a map and suitcase" width="900" height="900" loading="lazy" data-fb="#FF8A1F"><figcaption><b>Passport, probably</b><span>Departures</span></figcaption></figure>
+        <figure class="pj__tile t10" tabindex="0"><img src="https://images.unsplash.com/photo-1476514525535-07fb3b4ae5f1?auto=format&fit=crop&w=1000&q=72" alt="A wide lake and misty mountains" width="1000" height="1250" loading="lazy" data-fb="#0E0E10"><figcaption><b>Somewhere past Wi-Fi</b><span>Banff</span></figcaption></figure>
+      </div>
+    </section>
+
+    <!-- ============ 09 · NEWSLETTER ============ -->
+    <section class="newsletter" id="newsletter" data-theme="tangerine" aria-labelledby="nlTitle">
+      <div class="newsletter__inner">
+        <div class="newsletter__copy">
+          <p class="eyebrow">Chapter 07 — The Invitation</p>
+          <h2 id="nlTitle" class="newsletter__title">Your seat is <em>by the window.</em></h2>
+          <p>One letter a fortnight: a story, a photograph, a place worth detouring for. No itineraries, no sponsored sunsets.</p>
+        </div>
+
+        <div class="ticket" id="ticket">
+          <form class="ticket__form" id="nlForm" novalidate>
+            <p class="ticket__head"><span>Boarding pass</span><span>WW-07</span></p>
+            <div class="ticket__route"><b>HERE</b><svg viewBox="0 0 80 24" width="64" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M2 12h60" stroke-dasharray="3 5"/><path d="M60 4l14 8-14 8 3-8z" fill="currentColor"/></svg><b>THERE</b></div>
+
+            <label class="field" for="nlEmail"><span>Passenger email</span>
+              <input id="nlEmail" name="email" type="email" inputmode="email" autocomplete="email" placeholder="you@somewhere.com" aria-describedby="nlError" required>
+            </label>
+
+            <fieldset class="ticket__chips">
+              <legend>I’d like to read about</legend>
+              <label><input type="checkbox" name="int" value="Coast"><span>Coast</span></label>
+              <label><input type="checkbox" name="int" value="Mountains"><span>Mountains</span></label>
+              <label><input type="checkbox" name="int" value="Cities"><span>Cities</span></label>
+              <label><input type="checkbox" name="int" value="Food"><span>Food</span></label>
+            </fieldset>
+
+            <p class="field-error" id="nlError" role="alert"></p>
+            <button class="cta cta--ink" type="submit" data-magnetic data-cursor="Board">
+              <span class="cta__text">Board the newsletter</span>
+              <span class="cta__arrow" aria-hidden="true"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
+            </button>
+          </form>
+
+          <div class="ticket__done" id="nlDone" hidden tabindex="-1">
+            <p class="ticket__head"><span>Boarding pass</span><span id="nlCode">WW-07</span></p>
+            <h3>You’re on the list.</h3>
+            <p id="nlMsg">The next letter lands in your inbox soon. Pack light.</p>
+            <p class="ticket__gate">Gate <b>07</b> · Seat <b id="nlSeat">3A</b> · Window</p>
+            <button class="arrow-link" type="button" id="nlReset">Add another traveller <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></button>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- ============ 10 · FOOTER ============ -->
+  <footer class="footer" id="footer" data-theme="ink">
+    <div class="footer__top">
+      <nav class="footer__col" aria-label="Footer navigation">
+        <h2>Explore</h2>
+        <a href="#destinations">Destinations</a>
+        <a href="#stories">Stories</a>
+        <a href="#lens">Gallery</a>
+        <a href="#map">The Map</a>
+        <a href="#mood">By Mood</a>
+      </nav>
+      <div class="footer__col">
+        <h2>Follow along</h2>
+        <a href="#" data-demo-link rel="noopener">Instagram ↗</a>
+        <a href="#" data-demo-link rel="noopener">YouTube ↗</a>
+        <a href="#" data-demo-link rel="noopener">Pinterest ↗</a>
+        <a href="#" data-demo-link rel="noopener">Substack ↗</a>
+      </div>
+      <div class="footer__col footer__col--note">
+        <h2>Tonight’s view</h2>
+        <p>Somewhere a ferry is leaving, a market is opening, and a stranger is about to give you the best directions of your life.</p>
+      </div>
+      <button class="to-top" id="toTop" type="button" aria-label="Back to top" data-cursor="Up">
+        <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M12 19V5M6 11l6-6 6 6"/></svg>
+      </button>
+    </div>
+
+    <div class="footer__flight" aria-hidden="true">
+      <svg viewBox="0 0 1200 160" preserveAspectRatio="none" class="footer__route">
+        <path id="flightPath" d="M0 130 C 160 130, 200 30, 360 50 S 600 150, 780 90 S 1040 10, 1200 40" fill="none" stroke="currentColor" stroke-width="2" stroke-dasharray="3 9" stroke-linecap="round"/>
+      </svg>
+      <svg id="plane" class="footer__plane" viewBox="0 0 40 40" width="40" height="40"><path d="M3 21 L37 5 L29 35 L21 24 L15 31 L14 22 Z" fill="currentColor"/></svg>
+    </div>
+
+    <p class="footer__word" aria-label="WANDERWILD"><span>W</span><span>A</span><span>N</span><span>D</span><span>E</span><span>R</span><span>W</span><span>I</span><span>L</span><span>D</span></p>
+
+    <div class="footer__bottom">
+      <p>© 2026 WANDERWILD Journal. A frontend design demonstration.</p>
+      <p>Photography via Unsplash contributors.</p>
+      <p>See you out there ✺</p>
+    </div>
+  </footer>
+
+  <!-- ============ LIGHTBOX ============ -->
+  <div class="lightbox" id="lightbox" role="dialog" aria-modal="true" aria-label="Photo viewer" hidden>
+    <button class="lightbox__close" id="lbClose" type="button" aria-label="Close viewer">Close ✕</button>
+    <button class="lightbox__nav lightbox__nav--prev" id="lbPrev" type="button" aria-label="Previous photo">←</button>
+    <figure class="lightbox__fig">
+      <img id="lbImg" src="" alt="">
+      <figcaption id="lbCap"></figcaption>
+    </figure>
+    <button class="lightbox__nav lightbox__nav--next" id="lbNext" type="button" aria-label="Next photo">→</button>
+  </div>
+
+  <noscript><style>.loader{display:none!important}.hero__title .word,.reveal-img,.split-line{transform:none!important;clip-path:none!important;opacity:1!important}[data-reveal]{opacity:1!important;transform:none!important}</style></noscript>
+  <script src="js/script.js" defer></script>
+</body>
+</html>
