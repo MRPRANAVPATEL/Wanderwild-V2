@@ -4,7 +4,7 @@
 
 <div align="center">
 
-[![Wanderwild V2 website preview](https://image.thum.io/get/noanimate/width/1200/crop/850/maxAge/72/https://wanderwild-v2.vercel.app/)](https://wanderwild-v2.vercel.app/)
+[![Wanderwild V2 website preview](./wanderwild-v2-preview.png)](https://wanderwild-v2.vercel.app/)
 
 **Interactive travel editorial**
 
@@ -14,7 +14,7 @@
 
 </div>
 
-*Preview is generated from the public Vercel website using Thum.io and may take a moment to appear or reflect recent changes.*
+*Preview screenshot of the website homepage.*
 
 <!-- README SHOWCASE END -->
 
