@@ -1,5 +1,24 @@
 # WANDERWILD V2 — Premium Travel Magazine Website Template
 
+<!-- README SHOWCASE START -->
+
+<div align="center">
+
+[![Wanderwild V2 website preview](https://image.thum.io/get/noanimate/width/1200/crop/850/maxAge/72/https://wanderwild-v2.vercel.app/)](https://wanderwild-v2.vercel.app/)
+
+**Interactive travel editorial**
+
+[**View Live Website (Vercel)**](https://wanderwild-v2.vercel.app/) &nbsp;·&nbsp; [**GitHub Pages Demo**](https://mrpranavpatel.github.io/Wanderwild-V2/) &nbsp;·&nbsp; [**Source Code**](https://github.com/MRPRANAVPATEL/Wanderwild-V2)
+
+![HTML5](https://img.shields.io/badge/HTML5-E34F26?logo=html5&logoColor=white) ![CSS3](https://img.shields.io/badge/CSS3-1572B6?logo=css&logoColor=white) ![JavaScript](https://img.shields.io/badge/JavaScript-F7DF1E?logo=javascript&logoColor=black) ![Responsive](https://img.shields.io/badge/Responsive-Design-297F67) ![Static Site](https://img.shields.io/badge/Deployment-Live-267d45)
+
+</div>
+
+*Preview is generated from the public Vercel website using Thum.io and may take a moment to appear or reflect recent changes.*
+
+<!-- README SHOWCASE END -->
+
+
 **Thoughtfully built by Pranav Patel.**
 
 A visually immersive, responsive **travel journal and editorial magazine website template** created with HTML, CSS, and vanilla JavaScript. WANDERWILD V2 explores bold typography, vivid color, travel photography, interactive storytelling, and a magazine-inspired browsing experience.
