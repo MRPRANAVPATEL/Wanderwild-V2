@@ -24,7 +24,7 @@ It is a suitable starting point for a:
 
 **GitHub Pages:** https://mrpranavpatel.github.io/Wanderwild-V2/
 
-**Vercel:** Coming soon. The Vercel URL will be added after deployment.
+**Vercel (live):** https://wanderwild-v2.vercel.app/
 
 ## Features
 
@@ -92,7 +92,7 @@ The root `index.html` is the entry point. To review publication settings, open t
 
 ### Vercel (optional)
 
-Import this GitHub repository into Vercel and deploy it as a static site with no framework or build command. Add the Vercel production URL to this README after deployment.
+The website is also deployed to Vercel: **https://wanderwild-v2.vercel.app/**. It is a static site that does not need a framework or build command.
 
 ## Demo limitations and third-party assets
 
